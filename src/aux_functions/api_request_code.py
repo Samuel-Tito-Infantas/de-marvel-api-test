@@ -28,7 +28,6 @@ def request_full_data_api(mode: str):
     sleep_after = 5
     sleep_duration = 3
 
-
     base_url = param_setted.get("base_url", None)
     tmp_target_folder = param_setted.get("tmp_target_folder", None)
 
@@ -69,8 +68,10 @@ def request_full_data_api(mode: str):
             call_count += 1
 
             if call_count % sleep_after == 0:
-                print(f"Pausing for {sleep_duration** (call_count/sleep_after)*1.7} seconds after {call_count} calls...")
-                time.sleep(sleep_duration ** (call_count/sleep_after)*1.7)
+                print(
+                    f"Pausing for {sleep_duration** (call_count/sleep_after)*1.5} seconds after {call_count} calls..."
+                )
+                time.sleep(sleep_duration ** (call_count / sleep_after) * 1.5)
 
         else:
             print("Stop!!!")
