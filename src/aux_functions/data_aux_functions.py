@@ -70,6 +70,7 @@ def save_as_parquet(df: pd.DataFrame, path: str, file_name: str):
     target_final = os.path.join(path, f"{file_name}.parquet")
     try:
         df.to_parquet(target_final)
-    except:
+    except Exception as e:
+        print(f"An error occurred: {e}\n Try to save as str")
         df = df.astype(str)
         df.to_parquet(target_final)

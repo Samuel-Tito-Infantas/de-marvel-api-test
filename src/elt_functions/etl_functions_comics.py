@@ -11,7 +11,6 @@ from src.aux_functions.data_aux_functions import (
     read_json,
     rename_columns_table,
     split_tables,
-    update_row,
     save_as_parquet,
     treatment_explode_json_tables,
 )
