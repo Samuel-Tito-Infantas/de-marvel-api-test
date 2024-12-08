@@ -9,18 +9,22 @@ import json
 
 from typing import Tuple, Dict, Any
 
+from dotenv import load_dotenv
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.abspath(os.path.join(current_dir, "..", ".."))
 sys.path.append(parent_dir)
 
 from src.parameters import param_setted
 
+load_dotenv()
+
 PUBLIC_KEY = os.environ.get("PUBLIC_KEY")
 PRIVATE_KEY = os.environ.get("PRIVATE_KEY")
 ENVIROMENT = os.environ.get("ENVIROMENT")
 
 
-def request_full_data_api(mode: str):
+def request_full_data_api(mode: str) -> None:
 
     limit_param = 100
     offset_param = 0
@@ -47,8 +51,13 @@ def request_full_data_api(mode: str):
         try:
             request_code = result.get("data", []).get("code", None)
             # print(f"request_code: {request_code}", end="\n")
-        except:
-            print(f"erro on request_code. Check the result:\n {result} ", end="\n")
+
+        except Exception as e:
+            print(
+                f"""erro on request_code {e}.\n \
+                Check the result:\n {result}""",
+                end="\n",
+            )
 
         if request_code == 200:
             (
@@ -59,7 +68,7 @@ def request_full_data_api(mode: str):
                 body_result,
             ) = get_body_parameters(result)
 
-            convert_persist_parquet(body_result, newpath)
+            convert_persist_json(body_result, newpath)
 
             if request_body_offset + request_body_limit >= request_body_total:
                 break
@@ -69,7 +78,8 @@ def request_full_data_api(mode: str):
 
             if call_count % sleep_after == 0:
                 print(
-                    f"Pausing for {sleep_duration** (call_count/sleep_after)*1.5} seconds after {call_count} calls..."
+                    f"""Pausing for {sleep_duration** (call_count/sleep_after)*1.5}\
+                        seconds after {call_count} calls..."""
                 )
                 time.sleep(sleep_duration ** (call_count / sleep_after) * 1.5)
 
@@ -105,7 +115,8 @@ def get_marvel_api(
     }
 
     try:
-        response = requests.get(url, params=params)
+
+        response = requests.get(url, params=params, verify=False)
 
         if response.status_code == 200:
             return {
@@ -116,7 +127,8 @@ def get_marvel_api(
         else:
             return {
                 "status": "error",
-                "message": f"Failed to connect to MARVEL API. Status code: {response.status_code}",
+                "message": f"""Failed to connect to \
+                    MARVEL API. Status code: {response.status_code}""",
                 "details": response.json(),
             }
 
@@ -165,7 +177,7 @@ def get_body_parameters(result: json) -> (int, int, int, int, json):
     )
 
 
-def convert_persist_parquet(body_result: json, path: str) -> None:
+def convert_persist_json(body_result: json, path: str) -> None:
 
     json_object = json.dumps(body_result, indent=4)
     random_id = uuid_str_generator_id()
