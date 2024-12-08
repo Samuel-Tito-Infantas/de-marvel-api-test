@@ -3,7 +3,7 @@ import os
 from src.parameters import param_setted
 from src.aux_functions.api_request_code import request_full_data_api
 from src.elt_functions.etl_functions_characters import convert_save_characters_tables
-from src.elt_functions.etl_function_result import process_result_csv
+from src.elt_functions.etl_functions_result import process_result_csv
 
 
 def main_function(mode: str):
