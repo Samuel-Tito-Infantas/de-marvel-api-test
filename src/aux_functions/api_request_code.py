@@ -24,7 +24,7 @@ PRIVATE_KEY = os.environ.get("PRIVATE_KEY")
 ENVIROMENT = os.environ.get("ENVIROMENT")
 
 
-def request_full_data_api(mode: str):
+def request_full_data_api(mode: str) -> None:
 
     limit_param = 100
     offset_param = 0
@@ -53,8 +53,11 @@ def request_full_data_api(mode: str):
             # print(f"request_code: {request_code}", end="\n")
 
         except Exception as e:
-            print(f"""erro on request_code {e}.\n \
-                Check the result:\n {result}""", end="\n")
+            print(
+                f"""erro on request_code {e}.\n \
+                Check the result:\n {result}""",
+                end="\n",
+            )
 
         if request_code == 200:
             (
@@ -65,7 +68,7 @@ def request_full_data_api(mode: str):
                 body_result,
             ) = get_body_parameters(result)
 
-            convert_persist_parquet(body_result, newpath)
+            convert_persist_json(body_result, newpath)
 
             if request_body_offset + request_body_limit >= request_body_total:
                 break
@@ -174,7 +177,7 @@ def get_body_parameters(result: json) -> (int, int, int, int, json):
     )
 
 
-def convert_persist_parquet(body_result: json, path: str) -> None:
+def convert_persist_json(body_result: json, path: str) -> None:
 
     json_object = json.dumps(body_result, indent=4)
     random_id = uuid_str_generator_id()

@@ -2,6 +2,7 @@ import sys
 import os
 
 import pandas as pd
+from typing import Tuple
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.abspath(os.path.join(current_dir, "..", ".."))
@@ -16,7 +17,17 @@ from src.aux_functions.data_aux_functions import (
 )
 
 
-def convert_save_characters_tables(path_input: str, path_output: str, mode: str):
+def convert_save_characters_tables(
+    path_input: str, path_output: str, mode: str
+) -> Tuple[
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+]:
     df = read_json(path_input)
     df = rename_columns_table(df, mode)
 
@@ -71,7 +82,17 @@ def convert_save_characters_tables(path_input: str, path_output: str, mode: str)
     )
 
 
-def create_col_to_characters_tables(df: pd.DataFrame):
+def create_col_to_characters_tables(
+    df: pd.DataFrame,
+) -> Tuple[
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+]:
     col_characters = [
         "characters_id",
         "characters_name",
@@ -128,7 +149,9 @@ def treatment_characters_tables(
     df_characters_series: pd.DataFrame,
     df_characters_thumbnail: pd.DataFrame,
     df_characters_urls: pd.DataFrame,
-):
+) -> Tuple[
+    pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame
+]:
     df_characters_comics = treatment_explode_json_tables(
         df_characters_comics, id_col_name, "characters_comics", mode
     )

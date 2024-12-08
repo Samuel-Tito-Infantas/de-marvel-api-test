@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 
-def read_json(path: str):
+def read_json(path: str) -> pd.DataFrame:
 
     files = os.listdir(path)
     full_df_list = [pd.read_json(os.path.join(path, file)) for file in files]
@@ -10,7 +10,9 @@ def read_json(path: str):
     return df
 
 
-def rename_columns_table(df: pd.DataFrame, mode: str, exception_col: str = None):
+def rename_columns_table(
+    df: pd.DataFrame, mode: str, exception_col: str = None
+) -> pd.DataFrame:
     if exception_col is None:
         custom_col = [f"{mode}_{col}" for col in df.columns]
 
@@ -23,7 +25,9 @@ def rename_columns_table(df: pd.DataFrame, mode: str, exception_col: str = None)
     return df
 
 
-def split_tables(df: pd.DataFrame, target_columns: list, id_target: str):
+def split_tables(
+    df: pd.DataFrame, target_columns: list, id_target: str
+) -> pd.DataFrame:
     if id_target not in target_columns:
         target_columns.append(id_target)
 
@@ -37,7 +41,7 @@ def treatment_explode_json_tables(
     target_col_name: str,
     mode: str,
     how: str = "dict",
-):
+) -> pd.DataFrame:
     df.apply(lambda x: update_row(x, id_col_name, target_col_name, how), axis=1)
     df = pd.json_normalize(df[target_col_name])
     df = rename_columns_table(df, f"{mode}_{target_col_name}", id_col_name)
@@ -66,7 +70,7 @@ def update_row(
     return row
 
 
-def save_as_parquet(df: pd.DataFrame, path: str, file_name: str):
+def save_as_parquet(df: pd.DataFrame, path: str, file_name: str) -> None:
     target_final = os.path.join(path, f"{file_name}.parquet")
     try:
         df.to_parquet(target_final)

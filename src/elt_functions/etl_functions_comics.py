@@ -2,6 +2,7 @@ import os
 import sys
 
 import pandas as pd
+from typing import Tuple
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.abspath(os.path.join(current_dir, "..", ".."))
@@ -16,7 +17,23 @@ from src.aux_functions.data_aux_functions import (
 )
 
 
-def convert_save_comics_tables(path_input: str, path_output: str, mode: str):
+def convert_save_comics_tables(path_input: str, path_output: str, mode: str) -> Tuple[
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+]:
     df = read_json(path_input)
     df = rename_columns_table(df, mode)
 
@@ -106,7 +123,25 @@ def convert_save_comics_tables(path_input: str, path_output: str, mode: str):
     )
 
 
-def create_col_to_comics_tables(df: pd.DataFrame):
+def create_col_to_comics_tables(
+    df: pd.DataFrame,
+) -> Tuple[
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+]:
     col_comics = [
         "comics_id",
         "comics_digitalId",
@@ -219,7 +254,18 @@ def treatment_comics_tables(
     df_comics_prices: pd.DataFrame,
     df_comics_urls: pd.DataFrame,
     df_comics_images: pd.DataFrame,
-):
+) -> Tuple[
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+]:
 
     df_comics_characters = treatment_explode_json_tables(
         df_comics_characters, id_col_name, "comics_characters", mode
